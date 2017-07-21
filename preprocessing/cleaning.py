@@ -4,13 +4,9 @@ import numpy as np
 import os
 import re
 
-def db_read(db_name):
-    cnx = sqlite3.connect(db_name)
-    df = pd.read_sql_query("SELECT * FROM hh", cnx)
-    return df
-
 data_path = os.path.split(os.getcwd())[0]+"\\data\\vacancies.db"
-data = db_read(data_path)
+cnx = sqlite3.connect(data_path)
+data = pd.read_sql_query("SELECT * FROM hh", cnx)
 
 data = data.drop_duplicates(["TextOfVacancy"])
 number_vacancies = data.shape[0]
@@ -18,7 +14,7 @@ indexies = []
 for i in range(number_vacancies):
     if data["Salary"].iloc[i].find("0 руб") == -1:
         indexies.append(i)
-data = data.drop(data.index[indexies])
+data = data.drop(data.index[indexies]).reset_index()
 number_vacancies = data.shape[0]
 
 salaries = np.zeros([number_vacancies, 2])
@@ -33,3 +29,38 @@ for i in range(number_vacancies):
             salaries[i, 0] = int(arr[0])
     else:
         salaries[i, 1] = int(arr[0])
+salaries = pd.DataFrame(salaries, columns=["dowm", "up"])
+
+title = []
+for i in range(number_vacancies):
+    str = data["TitleOfVacancy"].iloc[i]
+    str = str.split('(')[0]
+    str = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё ]", " ", str)
+    title.append(str)
+title = pd.DataFrame(title, columns=["TitleOfVacancy"])
+
+text = []
+for i in range(number_vacancies):
+    str = data["TextOfVacancy"].iloc[i]
+    str = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё^ ]", " ", str)
+    str = str.lower()
+    text.append(str)
+text = pd.DataFrame(text, columns=["TextOfVacancy"])
+
+
+city = []
+for i in range(number_vacancies):
+    str = data["City"].iloc[i]
+    str = re.sub(r"[^а-я^А-Я]", "", str)
+    str = str.lower()
+    city.append(str)
+city = pd.DataFrame(city, columns=["City"])
+
+ndf = pd.concat([title, text, city, salaries, data[['NameOfCompany', 'Exp', 'EmploymentType', 'WorkHours', 'MainProfAreas','SubProfAreas']]], axis=1)
+
+data_path = os.path.split(os.getcwd())[0]+"\\data\\clean_vacancies.db"
+cnx = sqlite3.connect(data_path)
+cnx.execute("DROP TABLE IF EXISTS hh")
+ndf.to_sql(name='hh', con=cnx)
+
+
