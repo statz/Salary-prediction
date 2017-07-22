@@ -2,3 +2,4 @@
 data/vacancies.db
 *.xml
 *.iml
+data/clean_vacancies.db
