@@ -4,9 +4,10 @@ import numpy as np
 import os
 import re
 
-data_path = os.path.split(os.getcwd())[0]+"\\data\\vacancies.db"
-cnx = sqlite3.connect(data_path)
+data_path = os.path.split(os.getcwd())[0]+"\\data"
+cnx = sqlite3.connect(data_path+"\\vacancies.db")
 data = pd.read_sql_query("SELECT * FROM hh", cnx)
+cnx.close()
 
 data = data.drop_duplicates(["TextOfVacancy"])
 number_vacancies = data.shape[0]
@@ -58,9 +59,8 @@ city = pd.DataFrame(city, columns=["City"])
 
 ndf = pd.concat([title, text, city, salaries, data[['NameOfCompany', 'Exp', 'EmploymentType', 'WorkHours', 'MainProfAreas','SubProfAreas']]], axis=1)
 
-data_path = os.path.split(os.getcwd())[0]+"\\data\\clean_vacancies.db"
-cnx = sqlite3.connect(data_path)
+cnx = sqlite3.connect(data_path+"\\clean_vacancies.db")
 cnx.execute("DROP TABLE IF EXISTS hh")
 ndf.to_sql(name='hh', con=cnx)
-
+cnx.close()
 

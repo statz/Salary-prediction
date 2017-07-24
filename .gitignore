@@ -3,3 +3,5 @@ data/vacancies.db
 *.xml
 *.iml
 data/clean_vacancies.db
+*.csv
+data/words_cleaned_vacancies3.db
