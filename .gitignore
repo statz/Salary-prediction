@@ -5,3 +5,4 @@ data/vacancies.db
 data/clean_vacancies.db
 *.csv
 data/words_cleaned_vacancies3.db
+__pycache__/corex.cpython-36.pyc
