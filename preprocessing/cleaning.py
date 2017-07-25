@@ -30,7 +30,7 @@ for i in range(number_vacancies):
             salaries[i, 0] = int(arr[0])
     else:
         salaries[i, 1] = int(arr[0])
-salaries = pd.DataFrame(salaries, columns=["dowm", "up"])
+salaries = pd.DataFrame(salaries, columns=["down", "up"])
 
 title = []
 for i in range(number_vacancies):
