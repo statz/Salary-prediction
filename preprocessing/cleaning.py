@@ -59,7 +59,7 @@ city = pd.DataFrame(city, columns=["City"])
 
 ndf = pd.concat([title, text, city, salaries, data[['NameOfCompany', 'Exp', 'EmploymentType', 'WorkHours', 'MainProfAreas','SubProfAreas']]], axis=1)
 
-cnx = sqlite3.connect(data_path+"\\clean_vacancies.db")
+cnx = sqlite3.connect(data_path+"\\vacancies1.db")
 cnx.execute("DROP TABLE IF EXISTS hh")
 ndf.to_sql(name='hh', con=cnx)
 cnx.close()

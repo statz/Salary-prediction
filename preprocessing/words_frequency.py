@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 import re
 
 data_path = os.path.split(os.getcwd())[0]+"\\data"
-cnx = sqlite3.connect(data_path+"\\clean_vacancies.db")
+cnx = sqlite3.connect(data_path+"\\vacancies1.db")
 data = pd.read_sql_query("SELECT * FROM hh", cnx)
 cnx.close()
 
@@ -42,7 +42,7 @@ for i in range(TitleOfVacancy.shape[0]):
     cleaned_title.append(" ".join(tokens))
 data["TitleOfVacancy"] = pd.DataFrame(cleaned_title)
 
-cnx = sqlite3.connect(data_path+"\\words_cleaned_vacancies3.db")
+cnx = sqlite3.connect(data_path+"\\vacancies2.db")
 cnx.execute("DROP TABLE IF EXISTS hh")
 data.to_sql(name='hh', con=cnx)
 cnx.close()

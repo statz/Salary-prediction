@@ -4,10 +4,9 @@ import os
 import re
 import numpy as np
 from sklearn.cluster import KMeans
-import time
 
 data_path = os.path.split(os.getcwd())[0]+"\\data"
-cnx = sqlite3.connect(data_path+"\\words_cleaned_vacancies3.db")
+cnx = sqlite3.connect(data_path+"\\vacancies2.db")
 data = pd.read_sql_query("SELECT * FROM hh", cnx)
 cnx.close()
 main_areas = []
@@ -44,10 +43,10 @@ for i in range(SubProfAreas.shape[0]):
     tmp = area.split(';')
     for j in tmp:
         enc[i, sub_areas.index(j)] = 1
-sub_clusters = KMeans(n_clusters=2000).fit_predict(enc)
+sub_clusters = KMeans(n_clusters=200).fit_predict(enc)
 print("Done")
 nda = np.stack([main_clusters, sub_clusters], axis=1)
-comb_cluster = KMeans(n_clusters=800).fit_predict(nda)
+comb_cluster = KMeans(n_clusters=900).fit_predict(nda)
 
 ndf = pd.DataFrame(np.stack([main_clusters, sub_clusters, comb_cluster], axis=1), columns=["main", "sub", "comb"])
 ndf.to_csv(data_path+"\\clusters.csv")
