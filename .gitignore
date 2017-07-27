@@ -7,3 +7,5 @@ data/clean_vacancies.db
 data/words_cleaned_vacancies3.db
 __pycache__/corex.cpython-36.pyc
 *.db
+mystem.exe
+*.txt
