@@ -11,6 +11,7 @@ for i in version:
     cnx = sqlite3.connect(data_path+"\\vacancies3"+i+".db")
     data = pd.read_sql_query("SELECT * FROM hh", cnx)
     cnx.close()
+    data = data[data["TextOfVacancy"] != '']
     columns_y = ["up", "down"]
     columns_x = []
     for c in data.columns.values:
