@@ -1,8 +1,6 @@
 import pandas as pd
 import os
-import time
 
-time.clock()
 ud = ["down", "up"]
 data_path = os.path.split(os.path.split(os.getcwd())[0])[0] + "//test_train//"
 for b in ud:
@@ -20,11 +18,9 @@ for b in ud:
     mean_sal = []
     for i in train_dict:
         val = train_dict.get(i)
-        mean_sal.append([i, val[1]/val[0]])
-    df = pd.DataFrame(mean_sal, columns=["word", "mean_sal"])
+        mean_sal.append([i, val[0], val[1]/val[0]])
+    df = pd.DataFrame(mean_sal, columns=["word", "freq", "mean_sal"])
     df.to_csv(b+"_words_sal.csv", encoding='utf-8', index=False)
-    print("done")
-
 
 
 
