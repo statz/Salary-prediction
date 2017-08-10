@@ -15,16 +15,26 @@ words = {}
 cleaned_text = []
 for i in range(TextOfVacancy.shape[0]):
     text = TextOfVacancy.iloc[i]
-    text = re.sub(r" {2,}", " ", text)
-    text = re.sub(r"^ ", "", text)
     tokens = text.split(" ")
-    tokens = [i for i in tokens if (i not in stop_words)]
-    cleaned_text.append(" ".join(tokens))
+    tokens = [t for t in tokens if (t not in stop_words)]
     for j in tokens:
         if words.get(j) is None:
             words.update({j: 1})
         else:
             words.update({j: words.get(j) + 1})
+
+for w in words:
+    k = words.get(w)
+    if k < 2:
+        stop_words.append(w)
+
+stop_words = set(stop_words)
+for i in range(TextOfVacancy.shape[0]):
+    text = TextOfVacancy.iloc[i]
+    tokens = text.split(" ")
+    tokens = [t for t in tokens if (t not in stop_words)]
+    cleaned_text.append(" ".join(tokens))
+
 data["TextOfVacancy"] = pd.DataFrame(cleaned_text)
 
 df = pd.DataFrame([words])

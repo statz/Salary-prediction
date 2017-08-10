@@ -43,8 +43,13 @@ title = pd.DataFrame(title, columns=["TitleOfVacancy"])
 text = []
 for i in range(number_vacancies):
     str = data["TextOfVacancy"].iloc[i]
-    str = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё^ ]", " ", str)
+    str.replace("C++", "cpp")
+    str.replace("C#", "csh")
     str = str.lower()
+    str.replace("nan", "нан")
+    str = re.sub(r"[^а-я^a-z^ё^ ]", " ", str)
+    str = re.sub(r" {2,}", " ", str)
+    str = re.sub(r"^ ", "", str)
     text.append(str)
 text = pd.DataFrame(text, columns=["TextOfVacancy"])
 
