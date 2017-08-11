@@ -46,7 +46,7 @@ for i in range(number_vacancies):
     str.replace("C++", "cpp")
     str.replace("C#", "csh")
     str = str.lower()
-    str.replace("nan", "нан")
+    str = str.replace("nan", "нан")
     str = re.sub(r"[^а-я^a-z^ё^ ]", " ", str)
     str = re.sub(r" {2,}", " ", str)
     str = re.sub(r"^ ", "", str)

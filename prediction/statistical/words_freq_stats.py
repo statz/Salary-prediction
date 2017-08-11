@@ -7,20 +7,19 @@ ud = ["down", "up"]
 data_path = os.path.split(os.path.split(os.getcwd())[0])[0] + "//test_train//"
 for b in ud:
     train_x = pd.read_csv(data_path+b+"_x_train_normalized.csv")["TextOfVacancy"]
-    #print(train_x.iloc[218160])
     train_clusters = pd.read_csv(data_path+b+"_x_train_normalized.csv")["comb"]
     words = pd.read_csv(b+"_words_list.csv")["words"]
-    stats = pd.DataFrame(data=np.zeros([len(words), 2*900]), index=words)
+    d = {words.iloc[w] : w for w in range(words.shape[0])}
+    stats = np.zeros([len(words), 2 * 900])
     for i in range(train_x.shape[0]):
         print(i)
-        lex = train_x.ix[i].split(" ")
-        numbers = Counter(lex)
+        lex = train_x.iloc[i].split(" ")
+        numbers = Counter(lex).items()
         for w in numbers:
-            c = numbers.get(w)
-            if w == "nan":
-                continue
-            if c == 1:
-                stats.loc[w].iloc[train_clusters.iloc[i]] += 1
+            if w[1] == 1:
+                stats[d.get(w[0]), train_clusters.iloc[i]] += 1
             else:
-                stats.loc[w].iloc[900+train_clusters.iloc[i]] += 1
+                stats[d.get(w[0]), 900+train_clusters.iloc[i]] += 1
+    stats = pd.DataFrame(stats)
+    stats = pd.concat([words, stats], axis=1)
     stats.to_csv(b + "_stats.csv", encoding='utf-8', index=False)
