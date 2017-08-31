@@ -2,12 +2,15 @@ import pandas as pd
 import os
 
 ud = ["down", "up"]
-data_path = os.path.split(os.path.split(os.getcwd())[0])[0] + "//test_train//"
+data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
 for b in ud:
     train_x = pd.read_csv(data_path+b+"_x_train_normalized.csv")["TextOfVacancy"]
     words = set()
     for i in range(train_x.shape[0]):
         print(i)
+        s = train_x.ix[i]
+        if type(s) != str:
+            continue
         lex = train_x.ix[i].split(" ")
         for l in lex:
             if l not in words:

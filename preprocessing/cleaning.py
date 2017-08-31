@@ -36,6 +36,7 @@ title = []
 for i in range(number_vacancies):
     str = data["TitleOfVacancy"].iloc[i]
     str = str.split('(')[0]
+    str = str.lower()
     str = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё ]", " ", str)
     title.append(str)
 title = pd.DataFrame(title, columns=["TitleOfVacancy"])

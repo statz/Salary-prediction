@@ -26,7 +26,7 @@ for i in range(x_train.shape[0]):
 nw = []
 for w in words:
     k = words.get(w)
-    if k > 50 and k < 2000:
+    if k > 100 and k < 2000:
         nw.append(w)
 
 words = nw
@@ -46,12 +46,13 @@ for i in range(len(y_train)):
             binary_train_x[i, d.get(j)] = 1
 
 for i in range(len(y_test)):
-    #print(i)
     tokens = x_test[i].split(" ")
     for j in tokens:
         if j in words:
             binary_test_x[i, d.get(j)] = 1
 
-ga = GA(50, 5, len(words), 0.05, linear_model.LinearRegression())
-ga.optimize(binary_train_x, y_train, binary_test_x, y_test)
-
+ga = GA(1000, 10, len(words), 0.05, linear_model.LinearRegression())
+res = ga.optimize(binary_train_x, y_train, binary_test_x, y_test)
+ind = np.array(np.where(res))
+ind = ind.reshape(ind.shape[1])
+pd.DataFrame(np.array(list(words))[ind], columns=["words"]).to_csv("words.csv", encoding="utf-8", index=False)

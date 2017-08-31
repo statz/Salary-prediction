@@ -10,3 +10,5 @@ __pycache__/corex.cpython-36.pyc
 mystem.exe
 *.txt
 *.csv#
+prediction/title/labudaba.py
+prediction/statistical/genetic search/words.out

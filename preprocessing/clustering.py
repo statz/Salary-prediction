@@ -25,7 +25,7 @@ for i in range(MainProfAreas.shape[0]):
     tmp = area.split(';')
     for j in tmp:
         enc[i, main_areas.index(j)] = 1
-main_clusters = KMeans(n_clusters=1000).fit_predict(enc)
+main_clusters = KMeans(n_clusters=100).fit_predict(enc)
 print("Done")
 sub_areas = []
 SubProfAreas = data["SubProfAreas"]

@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeRegressor
 import lightgbm as lgb
 
 
-data_path = os.path.split(os.path.split(os.getcwd())[0])[0] + "//test_train//"
+data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
 
 train_data_x = pd.read_csv(data_path+"down_x_train_normalized.csv")
 test_data_x = pd.read_csv(data_path+"down_x_test_normalized.csv")
@@ -16,8 +16,7 @@ text_train_x = train_data_x["TextOfVacancy"].tolist()
 train_y = pd.read_csv(data_path+"down_y_train_normalized.csv")["down"].tolist()
 text_test_x = test_data_x["TextOfVacancy"].tolist()
 test_y = pd.read_csv(data_path+"down_y_test_normalized.csv")["down"].tolist()
-print(np.mean(test_y))
-words = pd.read_csv("var.csv")["0"].tolist()
+words = pd.read_csv("var.csv")["words"].tolist()
 
 train_x = np.zeros([len(train_y), len(words)])
 test_x = np.zeros([len(test_y), len(words)])
@@ -47,15 +46,10 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import ExtraTreesRegressor
 
 print("start pred")
-clf = DecisionTreeRegressor(max_depth=20)
+clf = DecisionTreeRegressor(max_depth=25)
 clf.fit(train_x, train_y)
 pr = clf.predict(test_x)
-j = 0
-err = 0
-for i in range(len(pr)):
-    if (test_y[i] < 100000):
-        err += (np.abs(pr[i]-test_y[i]))/test_y[i]
-        j += 1
-print(err/j)
+err = np.sum(np.abs(pr[:]-test_y[:])/test_y[:])/len(test_y)
+print(err)
 
 

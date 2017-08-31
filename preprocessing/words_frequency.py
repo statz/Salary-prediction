@@ -17,29 +17,8 @@ for i in range(TextOfVacancy.shape[0]):
     text = TextOfVacancy.iloc[i]
     tokens = text.split(" ")
     tokens = [t for t in tokens if (t not in stop_words)]
-    for j in tokens:
-        if words.get(j) is None:
-            words.update({j: 1})
-        else:
-            words.update({j: words.get(j) + 1})
-
-for w in words:
-    k = words.get(w)
-    if k < 2:
-        stop_words.append(w)
-
-stop_words = set(stop_words)
-for i in range(TextOfVacancy.shape[0]):
-    text = TextOfVacancy.iloc[i]
-    tokens = text.split(" ")
-    tokens = [t for t in tokens if (t not in stop_words)]
     cleaned_text.append(" ".join(tokens))
-
 data["TextOfVacancy"] = pd.DataFrame(cleaned_text)
-
-df = pd.DataFrame([words])
-df = df.transpose()
-df.to_csv(data_path+"\\words_frequency.csv",encoding='utf-8')
 
 TitleOfVacancy = data["TitleOfVacancy"]
 cleaned_title = []
@@ -49,7 +28,8 @@ for i in range(TitleOfVacancy.shape[0]):
     title = re.sub(r"^ ", "", title)
     tokens = title.split(" ")
     tokens = [i for i in tokens if (i not in stop_words)]
-    cleaned_title.append(" ".join(tokens))
+    if len(tokens):
+        cleaned_title.append(" ".join(tokens))
 data["TitleOfVacancy"] = pd.DataFrame(cleaned_title)
 
 cnx = sqlite3.connect(data_path+"\\vacancies2.db")

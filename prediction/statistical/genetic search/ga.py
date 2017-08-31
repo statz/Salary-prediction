@@ -29,7 +29,7 @@ class GA:
         self.__test_x = test_x
         self.__test_y = test_y
         self.__population_creating()
-        self.__search()
+        return self.__search()
 
     def __population_creating(self):
         self.__fitness_current = np.empty(self.__population_size)
@@ -51,10 +51,12 @@ class GA:
                 fitness_new.append(self.__evaluate(new_gen[j, :]))
             joint_population = np.concatenate((self.__current_population, new_gen))
             fitness_new = np.concatenate((self.__fitness_current, fitness_new), axis = 0)
-            next_ind = np.argpartition(fitness_new, self.__population_size)
+            next_ind = np.argpartition(fitness_new, self.__population_size)[:self.__population_size]
+            print(next_ind)
             self.__current_population = joint_population[next_ind, :]
             self.__fitness_current = fitness_new[next_ind]
             print("best %f"%np.min(self.__fitness_current))
+        return self.__current_population[np.argmin(self.__fitness_current)]
 
     def __make_new_generation(self):
         new_population = []
