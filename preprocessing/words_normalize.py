@@ -30,11 +30,10 @@ for l in labels:
     for t in text:
         lemmas = re.findall(r"[а-яa-zё|?]+", t)
         list = []
-        for l in lemmas:
-            list.append(re.match(r"[а-яa-zё]+",l).group(0))
+        for l1 in lemmas:
+            list.append(re.match(r"[а-яa-zё]+",l1).group(0))
         new_text.append(" ".join(list))
     f.close()
-
     new_text = pd.DataFrame(new_text)
     data[l] = new_text
 

@@ -33,7 +33,7 @@ main_clusters = KMeans(n_clusters=60).fit_predict(enc)
 print("Done")
 
 ndf = pd.DataFrame(np.stack([job_start, main_clusters], axis=1), columns=["job_start", "main"])
-ndf.to_csv(data_path+"\\clusters.csv")
+ndf.to_csv(data_path+"\\clusters.csv", index=False)
 
 #sub_areas = []
 #SubProfAreas = data["SubProfAreas"]

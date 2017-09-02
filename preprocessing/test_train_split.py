@@ -30,6 +30,3 @@ for i in version:
                                                   encoding="utf-8", index=False)
         pd.DataFrame(y_test, columns=[j]).to_csv("{0}{1}_y_test{2}.csv".format(test_train_path, j, i),
                                                  encoding="utf-8", index=False)
-
-
-

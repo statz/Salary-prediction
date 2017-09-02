@@ -24,7 +24,7 @@ for l in labels:
     k += 1
 enc = pd.DataFrame(enc, columns=labels)
 ndf = pd.concat([enc, data[["TextOfVacancy", "TitleOfVacancy", "down", "up"]]], axis=1)
-cl = pd.read_csv(data_path+"\\clusters.csv", encoding="utf-8", sep=",").reset_index()
+cl = pd.read_csv(data_path+"\\clusters.csv", encoding="utf-8", sep=",")
 ndf = pd.concat([ndf, cl], axis=1)
 
 cnx = sqlite3.connect(data_path+"\\vacancies3.db")
