@@ -30,6 +30,7 @@ for i in range(len(train_y)):
     for j in tokens:
         if j in words:
             train_x[i, d.get(j)] = 1
+    
 train_x = np.append(np.array(train_data_x[["City", "Exp", "EmploymentType", "WorkHours"]]).reshape([len(train_y), 4]), train_x, axis=1)
 for i in range(len(test_y)):
     #print(i)

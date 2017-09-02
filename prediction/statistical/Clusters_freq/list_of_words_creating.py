@@ -15,7 +15,7 @@ for b in ud:
             if l not in words:
                 words.add(l)
     df = pd.DataFrame(list(words), columns=["all",])
-    for j in np.arange(pd.DataFrame.max(clusters)):
+    for j in np.arange(60):
         print(j)
         words = set()
         train_x = data["TextOfVacancy"][data["main"] == j].as_matrix()
