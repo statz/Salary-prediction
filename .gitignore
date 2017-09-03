@@ -13,3 +13,4 @@ mystem.exe
 prediction/title/labudaba.py
 prediction/statistical/genetic search/words.out
 *.db-journal
+preprocessing/viz.py

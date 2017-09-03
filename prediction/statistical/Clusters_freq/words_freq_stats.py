@@ -10,7 +10,7 @@ for b in ud:
     train_clusters = pd.read_csv(data_path+b+"_x_train_normalized.csv")["main"].as_matrix()
     words = pd.read_csv(b+"_words_list.csv")["all"].dropna()
     d = {words.iloc[w]: w for w in range(words.shape[0])}
-    stats = np.zeros([len(words), 60])
+    stats = np.zeros([len(words), 400])
     for i in range(train_x.shape[0]):
         print(i)
         lex = str(train_x.iloc[i]).split(" ")

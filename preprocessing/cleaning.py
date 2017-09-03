@@ -63,7 +63,9 @@ for i in range(number_vacancies):
     city.append(str)
 city = pd.DataFrame(city, columns=["City"])
 
-ndf = pd.concat([title, text, city, salaries, data[['NameOfCompany', 'Exp', 'EmploymentType', 'WorkHours', 'MainProfAreas','SubProfAreas']]], axis=1)
+ndf = pd.concat([title, text, city, salaries, data[['NameOfCompany', 'Exp', 'EmploymentType',
+                                                    'WorkHours', 'MainProfAreas','SubProfAreas']]], axis=1)
+ndf = ndf[(ndf["down"] >= 7000) | (ndf["down"] == 0)]
 
 cnx = sqlite3.connect(data_path+"\\vacancies1.db")
 cnx.execute("DROP TABLE IF EXISTS hh")
