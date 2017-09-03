@@ -5,14 +5,14 @@ import numpy as np
 
 data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
 
-data = pd.read_csv(data_path+"down_x_train_normalized.csv")[["TextOfVacancy", "main"]]
+data = pd.read_csv(data_path+"up_x_train_normalized.csv")[["TextOfVacancy", "main"]]
 
-tmp = pd.read_csv("down_stats.csv")
+tmp = pd.read_csv("up_stats.csv")
 stats = tmp.drop(["all"], axis=1).as_matrix()
 words_all = tmp["all"].tolist()
 d = {words_all[w]: w for w in range(len(words_all))}
 
-words_by_clasters = pd.read_csv("down_words_list.csv")
+words_by_clasters = pd.read_csv("up_words_list.csv")
 n = 1000
 df = pd.DataFrame()
 for i in range(400):

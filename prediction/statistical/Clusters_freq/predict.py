@@ -6,10 +6,10 @@ from sklearn.ensemble import RandomForestRegressor
 
 data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
 
-gl_train_data_x = pd.read_csv(data_path + "down_x_train_normalized.csv")
-gl_test_data_x = pd.read_csv(data_path + "down_x_test_normalized.csv")
-gl_train_y = pd.read_csv(data_path + "down_y_train_normalized.csv")["down"]
-gl_test_y = pd.read_csv(data_path + "down_y_test_normalized.csv")["down"]
+gl_train_data_x = pd.read_csv(data_path + "up_x_train_normalized.csv")
+gl_test_data_x = pd.read_csv(data_path + "up_x_test_normalized.csv")
+gl_train_y = pd.read_csv(data_path + "up_y_train_normalized.csv")["up"]
+gl_test_y = pd.read_csv(data_path + "up_y_test_normalized.csv")["up"]
 
 all_feats = pd.read_csv("features.csv")
 errors = np.zeros([400])
@@ -73,8 +73,8 @@ for cl in range(400):
     if errors[cl]/len(test_y) > 3:
         print("##############################")
         print(len(words))
-        for i in range(len(test_y)):
-            print(pr[i], test_y[i], (pr[i]-test_y[i])/test_y[i])
+#        for i in range(len(test_y)):
+#            print(pr[i], test_y[i], (pr[i]-test_y[i])/test_y[i])
         p += 1
         el -= errors[cl]
         l -= len(test_y)
