@@ -26,4 +26,4 @@ for b in ud:
                     words.add(l)
         ndf = pd.DataFrame(list(words), columns=[str(j)])
         df = pd.concat([df,ndf], axis=1)
-    df.to_csv(b+"_words_list.csv", encoding='utf-8', index=False)
+    df.to_csv(os.getcwd()+"\\data\\" + b+"_words_list.csv", encoding='utf-8', index=False)
