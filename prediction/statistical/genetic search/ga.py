@@ -34,9 +34,8 @@ class GA:
     def __population_creating(self):
         self.__fitness_current = np.empty(self.__population_size)
         self.__current_population = np.random.choice([0, 1],
-                                                     size=(self.__population_size, self.__n_gens), p=[0.7, 0.3])
+                                                     size=(self.__population_size, self.__n_gens), p=[0.6, 0.4])
         for i in range(self.__population_size):
-            print(i)
             self.__fitness_current[i] = (self.__evaluate(self.__current_population[i, :]))
 
         print(self.__fitness_current)
