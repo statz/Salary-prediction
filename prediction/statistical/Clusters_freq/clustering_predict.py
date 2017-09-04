@@ -13,9 +13,10 @@ for l in ud:
     gl_train_y = pd.read_csv(data_path + l+"_y_train_normalized.csv")[l]
     gl_test_y = pd.read_csv(data_path + l+"_y_test_normalized.csv")[l]
 
-    all_feats = pd.read_csv(os.getcwd()+"\\"+l+"_words.csv")
+    all_feats = pd.read_csv(os.getcwd()+"\\data\\"+l+"_features.csv")
     errors = np.zeros([400])
     for cl in range(400):
+        print("Cluster "+str(cl))
         words = all_feats[str(cl)].dropna()
 
         text_train_x = gl_train_data_x[gl_train_data_x["main"] == cl]["TextOfVacancy"].tolist()
@@ -60,11 +61,11 @@ for l in ud:
                                     [["City", "Exp", "EmploymentType", "WorkHours", "job_start"]]).reshape([len(test_y), 5]),
                            test_x, axis=1)
 
-        print("start pred")
         clf = RandomForestRegressor(n_estimators= 200)
         clf.fit(train_x, train_y)
         pr = clf.predict(test_x)
         errors[cl] = np.sum(np.abs(pr[:]-test_y[:])/test_y[:])
+        print(errors[cl]/len(test_y))
     print(np.sum(errors)/len(gl_test_y))
     res.append(np.sum(errors)/len(gl_test_y))
 print("Results:", res)

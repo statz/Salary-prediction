@@ -8,12 +8,12 @@ ud = ["down", "up"]
 for l in ud:
     data = pd.read_csv(data_path+l+"_x_train_normalized.csv")[["TextOfVacancy", "main"]]
 
-    tmp = pd.read_csv(os.getcwd()+"\\"+l+"_stats.csv")
+    tmp = pd.read_csv(os.getcwd()+"\\data\\"+l+"_stats.csv")
     stats = tmp.drop(["all"], axis=1).as_matrix()
     words_all = tmp["all"].tolist()
     d = {words_all[w]: w for w in range(len(words_all))}
 
-    words_by_clasters = pd.read_csv(os.getcwd()+"\\"+l+"_words_list.csv")
+    words_by_clasters = pd.read_csv(os.getcwd()+"\\data\\"+l+"_words_list.csv")
     n = 1000
     df = pd.DataFrame()
     for i in range(400):
@@ -34,7 +34,6 @@ for l in ud:
             ind = np.argpartition(val, -n)[-n:]
             words = pd.DataFrame(words).iloc[ind].reset_index(drop=True)
         else:
-            print("lol")
             words = pd.DataFrame(words)
         df = pd.concat([df, words], axis=1)
     df.to_csv(os.getcwd()+"\\data\\"+l+"_features.csv", index=False, encoding="utf-8")

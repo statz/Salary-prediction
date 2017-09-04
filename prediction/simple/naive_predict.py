@@ -6,9 +6,9 @@ ud = ["down", "up"]
 data_path = os.path.split(os.path.split(os.getcwd())[0])[0] + "//test_train//"
 
 for b in ud:
-    test_x = pd.read_csv(data_path+b+"_x_test_normalized.csv")["TextOfVacancy"]
-    test_y = pd.read_csv(data_path+b+"_y_test.csv")[b]
-    mean_sal = pd.read_csv(b+"_words_sal.csv")[["word", "mean_sal"]]
+    test_x = pd.read_csv(data_path+b+"_x_test_normalized.csv")["TextOfVacancy"].tolist()
+    test_y = pd.read_csv(data_path+b+"_y_test.csv")[b].tolist()
+    mean_sal = pd.read_csv(os.getcwd()+"\\data\\" + b + "_words_sal.csv")[["word", "mean_sal"]]
     d = {}
     for i in range(mean_sal.shape[0]):
         d.update({mean_sal["word"].ix[i]: int(mean_sal["mean_sal"].ix[i])})
@@ -26,5 +26,5 @@ for b in ud:
         predict.append(sal/j)
     error = 0
     for i in range(len(predict)):
-        error += abs(predict[i] - test_y.ix[i])
+        error += abs(predict[i] - test_y[i])/test_y[i]
     print(error/len(predict))
