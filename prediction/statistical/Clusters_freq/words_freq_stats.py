@@ -6,7 +6,7 @@ import numpy as np
 ud = ["down", "up"]
 data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
 for b in ud:
-    train_x = pd.read_csv(data_path+b+"_x_train_normalized.csv")["TextOfVacancy"]
+    train_x = pd.read_csv(data_path+b+"_x_train_normalized.csv")["combined_text"]
     train_clusters = pd.read_csv(data_path+b+"_x_train_normalized.csv")["main"].as_matrix()
     words = pd.read_csv(os.getcwd()+"\\data\\" + b+"_words_list.csv")["all"].dropna()
     d = {words.iloc[w]: w for w in range(words.shape[0])}

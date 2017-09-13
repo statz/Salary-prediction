@@ -8,7 +8,7 @@ for b in ud:
     data = pd.read_csv(data_path+b+"_x_train_normalized.csv")
     clusters = data["main"]
     words = set()
-    train_x = data["TextOfVacancy"].as_matrix()
+    train_x = data["combined_text"].as_matrix()
     for i in range(train_x.shape[0]):
         lex = str(train_x[i]).split(" ")
         for l in lex:
@@ -18,7 +18,7 @@ for b in ud:
     for j in np.arange(400):
         print(j)
         words = set()
-        train_x = data["TextOfVacancy"][data["main"] == j].as_matrix()
+        train_x = data["combined_text"][data["main"] == j].as_matrix()
         for i in range(train_x.shape[0]):
             lex = str(train_x[i]).split(" ")
             for l in lex:

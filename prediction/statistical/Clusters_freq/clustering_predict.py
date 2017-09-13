@@ -19,8 +19,8 @@ for l in ud:
         print("Cluster "+str(cl))
         words = all_feats[str(cl)].dropna()
 
-        text_train_x = gl_train_data_x[gl_train_data_x["main"] == cl]["TextOfVacancy"].tolist()
-        text_test_x = gl_test_data_x[gl_test_data_x["main"] == cl]["TextOfVacancy"].tolist()
+        text_train_x = gl_train_data_x[gl_train_data_x["main"] == cl]["combined_text"].tolist()
+        text_test_x = gl_test_data_x[gl_test_data_x["main"] == cl]["combined_text"].tolist()
 
         ind_train_x = []
         cl_train = gl_train_data_x["main"].tolist()

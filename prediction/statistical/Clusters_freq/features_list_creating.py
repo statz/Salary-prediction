@@ -6,7 +6,7 @@ import numpy as np
 data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
 ud = ["down", "up"]
 for l in ud:
-    data = pd.read_csv(data_path+l+"_x_train_normalized.csv")[["TextOfVacancy", "main"]]
+    data = pd.read_csv(data_path+l+"_x_train_normalized.csv")[["combined_text", "main"]]
 
     tmp = pd.read_csv(os.getcwd()+"\\data\\"+l+"_stats.csv")
     stats = tmp.drop(["all"], axis=1).as_matrix()
@@ -18,7 +18,7 @@ for l in ud:
     df = pd.DataFrame()
     for i in range(400):
         print(i)
-        text_of_vacancy = data[data["main"] == i]["TextOfVacancy"]
+        text_of_vacancy = data[data["main"] == i]["combined_text"]
         words = words_by_clasters[str(i)].dropna()
         val = np.empty([len(words)])
         j = 0

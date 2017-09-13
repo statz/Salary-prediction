@@ -37,6 +37,10 @@ for l in labels:
     new_text = pd.DataFrame(new_text)
     data[l] = new_text
 
+comb_text = data["TitleOfVacancy"]+data["TextOfVacancy"]
+comb_text =pd.DataFrame(comb_text, columns=["combined_text"])
+data = pd.concat([data, comb_text], axis = 1)
+
 cnx = sqlite3.connect(data_path+"\\vacancies3_normalized.db")
 cnx.execute("DROP TABLE IF EXISTS hh")
 data.to_sql(name='hh', con=cnx, index=False)
