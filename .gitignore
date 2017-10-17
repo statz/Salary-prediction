@@ -15,3 +15,5 @@ prediction/statistical/genetic search/words.out
 *.db-journal
 preprocessing/viz.py
 prediction/statistical/genetic search/__pycache__/ga.cpython-36.pyc
+*.npy
+*.h5
