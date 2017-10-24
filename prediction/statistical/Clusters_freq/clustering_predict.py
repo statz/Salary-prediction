@@ -3,11 +3,13 @@ import numpy as np
 import os
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import SGDRegressor
 
 data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
 ud = ["down", "up"]
 res = []
 for l in ud:
+    coeff = np.empty([1005, 400])
     gl_train_data_x = pd.read_csv(data_path + l+"_x_train_normalized.csv")
     gl_test_data_x = pd.read_csv(data_path + l+"_x_test_normalized.csv")
     gl_train_y = pd.read_csv(data_path + l+"_y_train_normalized.csv")[l]
@@ -18,7 +20,6 @@ for l in ud:
     for cl in range(400):
         print("Cluster "+str(cl))
         words = all_feats[str(cl)].dropna()
-
         text_train_x = gl_train_data_x[gl_train_data_x["main"] == cl]["combined_text"].tolist()
         text_test_x = gl_test_data_x[gl_test_data_x["main"] == cl]["combined_text"].tolist()
 
@@ -35,7 +36,6 @@ for l in ud:
             if cl_test[i] == cl:
                 ind_test_x.append(i)
         test_y = gl_test_y.iloc[ind_test_x].tolist()
-
         train_x = np.zeros([len(train_y), len(words)])
         test_x = np.zeros([len(test_y), len(words)])
 
@@ -61,9 +61,14 @@ for l in ud:
                                     [["City", "Exp", "EmploymentType", "WorkHours", "job_start"]]).reshape([len(test_y), 5]),
                            test_x, axis=1)
 
-        clf = RandomForestRegressor(n_estimators= 200)
+        clf = RandomForestRegressor(n_estimators= 50)
         clf.fit(train_x, train_y)
         pr = clf.predict(test_x)
+        ind = np.argpartition(clf.feature_importances_, -10)[-10:]
+        print(clf.feature_importances_[ind])
+        print(ind)
+        ind = ind[ind>4]
+        print(np.array(list(words))[ind-5])
         errors[cl] = np.sum(np.abs(pr[:]-test_y[:])/test_y[:])
         print(errors[cl]/len(test_y))
     print(np.sum(errors)/len(gl_test_y))
