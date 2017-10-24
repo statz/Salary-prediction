@@ -20,10 +20,10 @@ number_vacancies = data.shape[0]
 
 salaries = np.zeros([number_vacancies, 2])
 for i in range(number_vacancies):
-    str = data["Salary"].iloc[i].replace(u'\xa0', u'')
-    arr = re.findall(r"\d+", str)
-    if str.find("от") != -1:
-        if str.find("до") != -1 and len(arr) == 2:
+    vacancy = data["Salary"].iloc[i].replace(u'\xa0', u'')
+    arr = re.findall(r"\d+", vacancy)
+    if vacancy.find("от") != -1:
+        if vacancy.find("до") != -1 and len(arr) == 2:
             salaries[i, 0] = int(arr[0])
             salaries[i, 1] = int(arr[1])
         else:
@@ -34,33 +34,46 @@ salaries = pd.DataFrame(salaries, columns=["down", "up"])
 
 title = []
 for i in range(number_vacancies):
-    str = data["TitleOfVacancy"].iloc[i]
-    str = str.split('(')[0]
-    str = str.lower()
-    str = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё ]", " ", str)
-    title.append(str)
+    vacancy = data["TitleOfVacancy"].iloc[i]
+    vacancy = vacancy.split('(')[0]
+    vacancy = vacancy.lower()
+    vacancy = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё ]", " ", vacancy)
+    title.append(vacancy)
 title = pd.DataFrame(title, columns=["TitleOfVacancy"])
 
 text = []
 for i in range(number_vacancies):
-    str = data["TextOfVacancy"].iloc[i]
-    str.replace("C++", "cpp")
-    str.replace("C#", "csh")
-    str = str.lower()
-    str = str.replace("nan", "нан")
-    str = re.sub(r"[^а-я^a-z^ё^ ]", " ", str)
-    str = re.sub(r" {2,}", " ", str)
-    str = re.sub(r"^ ", "", str)
-    text.append(str)
+    print(i)
+    vacancy = data["TextOfVacancy"].iloc[i]
+    vacancy.replace("C++", "cpp")
+    vacancy.replace("C#", "csh")
+    wr = re.search("[А-Я]*[а-я]+[А-Я]{1,1}[а-я]{1,}", vacancy)
+    if wr != None:
+        words = vacancy.split(" ")
+        ns = []
+        for w in words:
+            p = re.search("(?P<first>[А-Я]*[а-я]+)(?P<second>[А-Я]{1,1}[а-я]{1,})", w)
+            if p != None:
+                ns.append(p.groups()[0])
+                ns.append(p.groups()[1])
+            else:
+                ns.append(w)
+        vacancy = " ".join(ns)
+    vacancy = vacancy.lower()
+    vacancy = vacancy.replace("nan", "нан")
+    vacancy = re.sub(r"[^а-я^a-z^ё^ ]", " ", vacancy)
+    vacancy = re.sub(r" {2,}", " ", vacancy)
+    vacancy = re.sub(r"^ ", "", vacancy)
+    text.append(vacancy)
 text = pd.DataFrame(text, columns=["TextOfVacancy"])
 
 
 city = []
 for i in range(number_vacancies):
-    str = data["City"].iloc[i]
-    str = re.sub(r"[^а-я^А-Я]", "", str)
-    str = str.lower()
-    city.append(str)
+    vacancy = data["City"].iloc[i]
+    vacancy = re.sub(r"[^а-я^А-Я]", "", vacancy)
+    vacancy = vacancy.lower()
+    city.append(vacancy)
 city = pd.DataFrame(city, columns=["City"])
 
 ndf = pd.concat([title, text, city, salaries, data[['NameOfCompany', 'Exp', 'EmploymentType',
@@ -71,4 +84,3 @@ cnx = sqlite3.connect(data_path+"\\vacancies1.db")
 cnx.execute("DROP TABLE IF EXISTS hh")
 ndf.to_sql(name='hh', con=cnx)
 cnx.close()
-

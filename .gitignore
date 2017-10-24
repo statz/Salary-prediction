@@ -17,3 +17,7 @@ preprocessing/viz.py
 prediction/statistical/genetic search/__pycache__/ga.cpython-36.pyc
 *.npy
 *.h5
+data/main.py
+prediction/neural/data/down_model
+prediction/neural/data/up_model
+preprocessing/aaaa.py
