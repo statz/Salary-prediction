@@ -3,12 +3,12 @@ import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
 
-data_path = os.path.split(os.getcwd())[0]+"\\data"
-test_train_path = os.path.split(os.getcwd())[0]+"\\test_train\\"
+data_path = os.path.split(os.getcwd())[0] + "\\data"
+test_train_path = os.path.split(os.getcwd())[0] + "\\test_train\\"
 
 version = ["", "_normalized"]
 for i in version:
-    cnx = sqlite3.connect(data_path+"\\vacancies3"+i+".db")
+    cnx = sqlite3.connect(data_path + "\\vacancies3" + i + ".db")
     data = pd.read_sql_query("SELECT * FROM hh", cnx)
     cnx.close()
     data = data[data["TextOfVacancy"] != '']

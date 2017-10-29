@@ -6,34 +6,34 @@ import numpy as np
 from sklearn.cluster import KMeans
 from collections import Counter
 
-data_path = os.path.split(os.getcwd())[0]+"\\data"
-cnx = sqlite3.connect(data_path+"\\vacancies2.db")
+data_path = os.path.split(os.getcwd())[0] + "\\data"
+cnx = sqlite3.connect(data_path + "\\vacancies2.db")
 data = pd.read_sql_query("SELECT * FROM hh", cnx)
 cnx.close()
-#main_areas = ["Началокарьерыстуденты", "Продажи"]
-#MainProfAreas = data["MainProfAreas"]
-#n = MainProfAreas.shape[0]
-#for i in range(MainProfAreas.shape[0]):
+# main_areas = ["Началокарьерыстуденты", "Продажи"]
+# MainProfAreas = data["MainProfAreas"]
+# n = MainProfAreas.shape[0]
+# for i in range(MainProfAreas.shape[0]):
 #    area = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё^;]", "", MainProfAreas.iloc[i])
 #    tmp = area.split(';')[:-1]
 #    for j in tmp:
 #        if j not in main_areas:
 #            main_areas.append(j)
-#print("aa")
-#d = {main_areas[w]: w for w in range(len(main_areas))}
-#enc = np.zeros([n, len(main_areas)])
-#for i in range(MainProfAreas.shape[0]):
+# print("aa")
+# d = {main_areas[w]: w for w in range(len(main_areas))}
+# enc = np.zeros([n, len(main_areas)])
+# for i in range(MainProfAreas.shape[0]):
 #    area = re.sub(r"[^а-я^А-Я^a-z^A-Z^ё^Ё^;]", "", MainProfAreas.iloc[i])
 #    tmp = area.split(';')[:-1]
 #    for j in tmp:
 #        enc[i, d.get(j)] = 1
-#job_start = enc[:, 0]
-#enc = enc[:, 1:]
-#main_clusters = KMeans(n_clusters=60).fit_predict(enc)
-#print("Done")
-#print(Counter(main_clusters))
-#ndf = pd.DataFrame(np.stack([job_start, main_clusters], axis=1), columns=["job_start", "main"])
-#print(ndf[ndf["main"] == 3]["TitleOfVacancy"])
+# job_start = enc[:, 0]
+# enc = enc[:, 1:]
+# main_clusters = KMeans(n_clusters=60).fit_predict(enc)
+# print("Done")
+# print(Counter(main_clusters))
+# ndf = pd.DataFrame(np.stack([job_start, main_clusters], axis=1), columns=["job_start", "main"])
+# print(ndf[ndf["main"] == 3]["TitleOfVacancy"])
 
 sub_areas = ["НачальныйуровеньМалоопыта"]
 SubProfAreas = data["SubProfAreas"]
@@ -59,14 +59,14 @@ sub_clusters = KMeans(n_clusters=400).fit_predict(enc)
 print("Done")
 print(Counter(sub_clusters))
 ndf = pd.DataFrame(np.stack([job_start, sub_clusters], axis=1), columns=["job_start", "main"])
-ndf.to_csv(data_path+"\\clusters.csv", index=False)
+ndf.to_csv(data_path + "\\clusters.csv", index=False)
 
 #
 #
-#nda = np.stack([main_clusters, sub_clusters], axis=1)
-#comb_cluster = KMeans(n_clusters=75).fit_predict(nda)
-#print(Counter(comb_cluster))
+# nda = np.stack([main_clusters, sub_clusters], axis=1)
+# comb_cluster = KMeans(n_clusters=75).fit_predict(nda)
+# print(Counter(comb_cluster))
 #
 
-#ndf = pd.DataFrame(np.stack([main_clusters, sub_clusters, comb_cluster], axis=1), columns=["main", "sub", "comb"])
-#ndf.to_csv(data_path+"\\clusters.csv")
+# ndf = pd.DataFrame(np.stack([main_clusters, sub_clusters, comb_cluster], axis=1), columns=["main", "sub", "comb"])
+# ndf.to_csv(data_path+"\\clusters.csv")

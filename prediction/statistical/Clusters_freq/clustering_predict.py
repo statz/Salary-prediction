@@ -6,7 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import SGDRegressor
 
 data_path = os.getcwd().split("\\prediction")[0]+"\\test_train\\"
-ud = ["down", "up"]
+ud = ["down"]#, "up"]
 res = []
 for l in ud:
     coeff = np.empty([1005, 400])

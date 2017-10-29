@@ -1,9 +1,10 @@
 import sqlite3
 import pandas as pd
 import os
+import nltk
 from nltk.corpus import stopwords
 import re
-
+nltk.download('stopwords')
 data_path = os.path.split(os.getcwd())[0]+"\\data"
 cnx = sqlite3.connect(data_path+"\\vacancies1.db")
 data = pd.read_sql_query("SELECT * FROM hh", cnx)
