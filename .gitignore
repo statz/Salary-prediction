@@ -22,3 +22,5 @@ prediction/neural/data/down_model
 prediction/neural/data/up_model
 preprocessing/aaaa.py
 data/v2w
+*.pyc
+prediction/statistical/genetic search/__pycache__/ga.cpython-36.pyc
