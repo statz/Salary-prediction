@@ -28,7 +28,7 @@ y = np.log(pd.read_csv(data_path + "down_y_train_normalized.csv").as_matrix()) -
 words = {}
 n = 10000
 h5f = h5py.File("x.h5", 'r')
-for iteration in range(4):
+for iteration in range(800):
     print(iteration)
     indexies = np.arange(len(y))
     np.random.shuffle(indexies)
