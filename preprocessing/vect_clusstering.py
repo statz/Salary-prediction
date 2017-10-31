@@ -9,13 +9,14 @@ import time
 from sklearn.cluster import KMeans
 data_path = os.getcwd().split("\\preprocessing")[0]+"\\data\\"
 
-cnx = sqlite3.connect(data_path + "\\vacancies3_normalized2.db")
-data = pd.read_sql_query("SELECT * FROM hh", cnx)
-cnx.close()
-vec_dim = 200
-text = data["combined_text"]
-print(time.clock())
+
 if not os.path.exists(data_path+"v2w"):
+    cnx = sqlite3.connect(data_path + "\\vacancies3_normalized2.db")
+    data = pd.read_sql_query("SELECT * FROM hh", cnx)
+    cnx.close()
+    vec_dim = 200
+    text = data["combined_text"]
+    print(time.clock())
     print("Start training")
     text_words = list(map(str.split, text))
     model = w2v(text_words, min_count=30, size=vec_dim)
@@ -40,12 +41,29 @@ if not os.path.exists(data_path+"mean_vect.h5"):
     h5f.close()
 
 h5f = h5py.File(data_path+"mean_vect.h5",'r')
-b = h5f['dataset_1'][:100000]
+indexies = np.arange(100000)
+np.random.shuffle(indexies)
+indexies = indexies[:2000]
+indexies = np.sort(indexies)
+b = h5f['dataset_1'][list(indexies)]
 h5f.close()
 
 print(time.clock())
-#clusterer = hdbscan.HDBSCAN(min_cluster_size=5)
-#cluster_labels = clusterer.fit_predict(b)
-kmean = KMeans(n_clusters=1000)
-kmean.fit_transform(b)
+#kmean = KMeans(n_clusters=1000)
+#kmean.fit_transform(b)
+#clusterer = hdbscan.HDBSCAN(min_cluster_size=50)
+#cluster_labels = clusterer.fit_predict(tsne)
+from sklearn.manifold import TSNE
+from sklearn.decomposition import IncrementalPCA
+from matplotlib import pyplot as ppt
+pca = IncrementalPCA(n_components=50).fit_transform(b)
+tsne = TSNE(n_components=3).fit_transform(pca)
+kmean = KMeans(n_clusters=12)
+cluster_labels = kmean.fit_predict(tsne)
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(tsne[:, 0],tsne[:, 1], tsne[:, 2], c=cluster_labels)
+plt.show()
 print(time.clock())

@@ -8,7 +8,7 @@ cnx = sqlite3.connect(data_path + "\\vacancies2.db")
 data = pd.read_sql_query("SELECT * FROM hh", cnx)
 cnx.close()
 labels = ["City", "Exp", "EmploymentType", "WorkHours"]
-enc = np.empty([data.shape[0], len(labels)])
+enc = np.empty([data.shape[0], len(labels)+2])
 k = 0
 for l in labels:
     uniq = []
@@ -22,7 +22,14 @@ for l in labels:
             enc[j, k] = uniq.index(i)
         j += 1
     k += 1
-enc = pd.DataFrame(enc, columns=labels)
+
+city = list(data[l])
+for i in range(len(city)):
+    if city[i] == "москва":
+        enc[i, -2] = 1
+    if city[i] == "санктпетербург":
+        enc[i, -1] = 1
+enc = pd.DataFrame(enc, columns=(labels+["москва", "спб"]))
 ndf = pd.concat([enc, data[["TextOfVacancy", "TitleOfVacancy", "down", "up"]]], axis=1)
 cl = pd.read_csv(data_path + "\\clusters.csv", encoding="utf-8", sep=",")
 ndf = pd.concat([ndf, cl], axis=1)
