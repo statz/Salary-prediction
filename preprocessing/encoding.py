@@ -23,7 +23,7 @@ for l in labels:
         j += 1
     k += 1
 
-city = list(data[l])
+city = list(data["City"])
 for i in range(len(city)):
     if city[i] == "москва":
         enc[i, -2] = 1
