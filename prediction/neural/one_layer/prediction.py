@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from scipy.sparse import hstack
 import h5py
 from matplotlib import pyplot
-n = 200000
+n = -1
 data_path = os.getcwd().split("\\prediction")[0] + "\\test_train\\"
 y_train = pd.read_csv(data_path + "down_y_train_normalized.csv").as_matrix()
 y_test = pd.read_csv(data_path + "down_y_test_normalized.csv").as_matrix()
@@ -17,7 +17,7 @@ if not os.path.exists("x1.h5"):
     train_data = pd.read_csv(data_path + "down_x_train_normalized.csv")
     text = train_data["TextOfVacancy"].values.astype('U')
     vocabluary = list(pd.read_csv("words_freq.csv")["name"])
-    tfidf = CountVectorizer(min_df=(30 / len(text)), max_df=(len(text) * 0.90), max_features=2000, binary=True, ngram_range=(1, 2))
+    tfidf = CountVectorizer(min_df=(30 / len(text)), max_df=(len(text) * 0.90), max_features=1, binary=True, ngram_range=(1, 2))
     vect_text_train = tfidf.fit_transform(text)
     train_x = hstack([vect_text_train, train_data[["Exp", "EmploymentType", "WorkHours", "job_start",
                                                    "москва", "спб"]].as_matrix()])
@@ -33,19 +33,19 @@ indexies = indexies[:n]
 indexies = np.sort(indexies)
 h5f = h5py.File("x1.h5", 'r')
 train_x = h5f['dataset_1'][list(indexies)]
-y_train = y_train[:n]
+y_train = y_train[list(indexies)]
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.callbacks import History
 history = History()
 
 model = Sequential()
-model.add(Dense(3000, input_dim=train_x.shape[1], activation='sigmoid'))
-model.add(Dropout(0.95))
+model.add(Dense(50, input_dim=train_x.shape[1], activation='tanh'))
+model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='mean_absolute_percentage_error', optimizer='adam', metrics=['mean_absolute_percentage_error'])
-model.fit(train_x, y_train, epochs=300, batch_size=400, validation_split=0.1, callbacks=[history])
+model.fit(train_x, y_train, epochs=300, batch_size=800, validation_split=0.1, callbacks=[history])
 loss = history.history["val_loss"]
 pyplot.plot(np.arange(len(loss)), loss)
 pyplot.show()

@@ -62,7 +62,7 @@ for l in ud:
                 if j in words:
                     binary_test_x[i, d.get(j)] = 1
 
-        ga = GA(50, 10, len(words), 0.05, linear_model.SGDRegressor())
+        ga = GA(50, 10, len(words), 0.05, linear_model.SGDRegressor(l1_ratio= 1, penalty="none", n_iter=20))
         res = ga.optimize(binary_train_x, y_train, binary_test_x, y_test)
         ind = np.array(np.where(res))
         ind = ind.reshape(ind.shape[1])
