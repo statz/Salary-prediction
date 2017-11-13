@@ -26,3 +26,6 @@ data/v2w
 prediction/statistical/genetic search/__pycache__/ga.cpython-36.pyc
 prediction/statistical/genetic search/__pycache__/ga.cpython-36.pyc
 prediction/statistical/genetic search/__pycache__/ga.cpython-36.pyc
+*.pyc
+prediction/neural/one_layer/ffsd.py
+*.pyc
