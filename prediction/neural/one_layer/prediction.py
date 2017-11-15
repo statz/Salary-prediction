@@ -7,7 +7,7 @@ import h5py
 from matplotlib import pyplot
 from nltk.corpus import stopwords
 
-n = 150000
+n = -1
 data_path = os.getcwd().split("\\prediction")[0] + "\\test_train\\"
 y_train = pd.read_csv(data_path + "down_y_train_normalized.csv").as_matrix()
 y_test = pd.read_csv(data_path + "down_y_test_normalized.csv").as_matrix()
@@ -19,7 +19,7 @@ if not os.path.exists("x1.h5"):
     train_data = pd.read_csv(data_path + "down_x_train_normalized.csv")
     text = train_data["combined_text"].values.astype('U')
     vocabluary = list(pd.read_csv("words_freq.csv")["name"])
-    tfidf = CountVectorizer(min_df= 100 / len(text), max_df=0.1, max_features=1, binary=True, ngram_range=(1, 2)
+    tfidf = CountVectorizer(min_df= 100 / len(text), binary=True, ngram_range=(1, 1)
                             ,stop_words=stopwords.words('russian') + stopwords.words('english'))
     vect_text_train = tfidf.fit_transform(text)
     train_x = hstack([vect_text_train, train_data[["Exp", "EmploymentType", "WorkHours", "job_start",
@@ -32,31 +32,55 @@ if not os.path.exists("x1.h5"):
     h5f.close()
     print(3)
 print(4)
-indexies = np.arange(len(y_train))
-np.random.shuffle(indexies)
-indexies = indexies[:n]
-indexies = np.sort(indexies)
-print(5)
 h5f = h5py.File("x1.h5", 'r')
 train_x = h5f['dataset_1'][:]
-train_x = train_x[[list(indexies)]]
-y_train = y_train[list(indexies)]
+if n > 0:
+    indexies = np.arange(len(y_train))
+    np.random.shuffle(indexies)
+    indexies = indexies[:n]
+    indexies = np.sort(indexies)
+    print(5)
+    train_x = train_x[[list(indexies)]]
+    y_train = y_train[list(indexies)]
 print(6)
 train_x[:, -1] /= (mx - mn)
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
+
+
+from keras.layers import Dropout
 from keras.callbacks import History
+from keras.layers import Dense, Input, concatenate
+from keras.models import Model
+
 history = History()
+sequence_input = Input(shape=(train_x.shape[1]-7,))
+x = Dense(1000, activation='tanh')(sequence_input)
+x = Dropout(0.65)(x)
+x = Dense(150, activation='tanh')(sequence_input)
+x = Dropout(0.5)(x)
+auxiliary_input = Input(shape=(7,), name='aux_input')
+#y = Dense(10, activation='relu')(auxiliary_input)
+#y = Dropout(0.2)(y)
+x = concatenate([x, auxiliary_input])
+x = Dense(100, activation='tanh')(x)
+x = Dropout(0.3)(x)
+x = Dense(10, activation='tanh')(x)
+x = Dropout(0.1)(x)
+preds = Dense(1, activation='sigmoid')(x)
 
-model = Sequential()
-model.add(Dense(100, input_dim=train_x.shape[1], activation='tanh', kernel_initializer='random_uniform',))
-model.add(Dropout(0.25))
-model.add(Dense(50, input_dim=train_x.shape[1], activation='tanh', kernel_initializer='random_uniform',))
-model.add(Dropout(0.15))
-model.add(Dense(1, activation='sigmoid'))
+model = Model([sequence_input,auxiliary_input], preds)
+model.compile(loss='mean_absolute_percentage_error',
+              optimizer='adam',
+              metrics=['mean_absolute_percentage_error'])
+model.fit([train_x[:, :-7], train_x[:, -7:]],
+          y_train, batch_size=500, epochs=250, validation_split=0.05, callbacks=[history])
 
-model.compile(loss='mean_absolute_percentage_error', optimizer='adamax', metrics=['mean_absolute_percentage_error'])
-model.fit(train_x, y_train, epochs=100, batch_size=500, validation_split=0.1, callbacks=[history])
+#model = Sequential()
+#model.add(Dense(1500, input_dim=train_x.shape[1], activation='tanh', kernel_initializer='random_uniform',))
+#model.add(Dropout(0.25))
+#model.add(Dense(1, activation='sigmoid'))
+
+#model.compile(loss='mean_absolute_percentage_error', optimizer='adam', metrics=['mean_absolute_percentage_error'])
+#model.fit(train_x, y_train, epochs=100, batch_size=500, validation_split=0.1, callbacks=[history])
 loss = history.history["val_loss"]
 pyplot.plot(np.arange(len(loss)), loss)
 pyplot.show()

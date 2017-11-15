@@ -29,3 +29,4 @@ prediction/statistical/genetic search/__pycache__/ga.cpython-36.pyc
 *.pyc
 prediction/neural/one_layer/ffsd.py
 *.pyc
+prediction/neural/one_layer/cvv.py
