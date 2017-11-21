@@ -70,14 +70,23 @@ text = pd.DataFrame(text, columns=["TextOfVacancy"])
 city = []
 for i in range(number_vacancies):
     vacancy = data["City"].iloc[i]
-    vacancy = re.sub(r"[^а-я^А-Я]", "", vacancy)
+    vacancy = re.sub(r"[^а-я^А-Я^A-Za-z^ё^Ё]", "", vacancy)
     vacancy = vacancy.lower()
     city.append(vacancy)
 city = pd.DataFrame(city, columns=["City"])
 
-ndf = pd.concat([title, text, city, salaries, data[['NameOfCompany', 'Exp', 'EmploymentType',
+name = []
+for i in range(number_vacancies):
+    vacancy = data["NameOfCompany"].iloc[i]
+    vacancy = re.sub(r"[^а-я^А-Я^A-Za-z^ё^Ё]", "", vacancy)
+    vacancy = vacancy.lower()
+    name.append(vacancy)
+name = pd.DataFrame(name, columns=["NameOfCompany"])
+
+
+ndf = pd.concat([title, text, city, name, salaries, data[['Exp', 'EmploymentType',
                                                     'WorkHours', 'MainProfAreas', 'SubProfAreas']]], axis=1)
-ndf = ndf[(ndf["down"] >= 7000) | (ndf["down"] == 0)]
+ndf = ndf[(ndf["down"] >= 8000) | (ndf["down"] == 0)]
 
 cnx = sqlite3.connect(data_path + "\\vacancies1.db")
 cnx.execute("DROP TABLE IF EXISTS hh")

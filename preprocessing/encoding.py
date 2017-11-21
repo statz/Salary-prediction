@@ -7,7 +7,7 @@ data_path = os.path.split(os.getcwd())[0] + "\\data"
 cnx = sqlite3.connect(data_path + "\\vacancies2.db")
 data = pd.read_sql_query("SELECT * FROM hh", cnx)
 cnx.close()
-labels = ["City", "Exp", "EmploymentType", "WorkHours"]
+labels = ["Exp", "EmploymentType", "WorkHours"]
 enc = np.empty([data.shape[0], len(labels)+2])
 k = 0
 for l in labels:
@@ -30,7 +30,7 @@ for i in range(len(city)):
     if city[i] == "санктпетербург":
         enc[i, -1] = 1
 enc = pd.DataFrame(enc, columns=(labels+["москва", "спб"]))
-ndf = pd.concat([enc, data[["TextOfVacancy", "TitleOfVacancy", "NameOfCompany", "down", "up"]]], axis=1)
+ndf = pd.concat([enc, data[["TextOfVacancy", "City", "TitleOfVacancy", "NameOfCompany", "down", "up"]]], axis=1)
 cl = pd.read_csv(data_path + "\\clusters.csv", encoding="utf-8", sep=",")
 ndf = pd.concat([ndf, cl], axis=1)
 
