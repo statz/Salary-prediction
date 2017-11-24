@@ -21,7 +21,7 @@ for i in version:
         new_data = data[data[j] != 0]
         x = new_data.drop(columns_y, axis=1).as_matrix()
         y = new_data[j].as_matrix()
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=10000, random_state=0)
         pd.DataFrame(x_train, columns=columns_x).to_csv("{0}{1}_x_train{2}.csv".format(test_train_path, j, i),
                                                         encoding="utf-8", index=False)
         pd.DataFrame(x_test, columns=columns_x).to_csv("{0}{1}_x_test{2}.csv".format(test_train_path, j, i),

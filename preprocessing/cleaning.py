@@ -30,6 +30,8 @@ for i in range(number_vacancies):
             salaries[i, 0] = int(arr[0])
     else:
         salaries[i, 1] = int(arr[0])
+    if vacancy.find("НДФЛ") != -1:
+        salaries[i, :] *= 1-0.13
 salaries = pd.DataFrame(salaries, columns=["down", "up"])
 
 title = []
@@ -87,6 +89,7 @@ name = pd.DataFrame(name, columns=["NameOfCompany"])
 ndf = pd.concat([title, text, city, name, salaries, data[['Exp', 'EmploymentType',
                                                     'WorkHours', 'MainProfAreas', 'SubProfAreas']]], axis=1)
 ndf = ndf[(ndf["down"] >= 8000) | (ndf["down"] == 0)]
+ndf = ndf[(ndf["up"] >= 8000) | (ndf["up"] == 0)]
 
 cnx = sqlite3.connect(data_path + "\\vacancies1.db")
 cnx.execute("DROP TABLE IF EXISTS hh")

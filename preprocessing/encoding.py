@@ -31,8 +31,8 @@ for i in range(len(city)):
         enc[i, -1] = 1
 enc = pd.DataFrame(enc, columns=(labels+["москва", "спб"]))
 ndf = pd.concat([enc, data[["TextOfVacancy", "City", "TitleOfVacancy", "NameOfCompany", "down", "up"]]], axis=1)
-cl = pd.read_csv(data_path + "\\clusters.csv", encoding="utf-8", sep=",")
-ndf = pd.concat([ndf, cl], axis=1)
+#cl = pd.read_csv(data_path + "\\clusters.csv", encoding="utf-8", sep=",")
+#ndf = pd.concat([ndf, cl], axis=1)
 
 cnx = sqlite3.connect(data_path + "\\vacancies3.db")
 cnx.execute("DROP TABLE IF EXISTS hh")

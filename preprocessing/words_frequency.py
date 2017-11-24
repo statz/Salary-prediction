@@ -11,7 +11,7 @@ data = pd.read_sql_query("SELECT * FROM hh", cnx)
 cnx.close()
 
 TextOfVacancy = data["TextOfVacancy"]
-stop_words = stopwords.words('russian')
+stop_words = stopwords.words('russian')+stopwords.words('english')
 words = {}
 cleaned_text = []
 for i in range(TextOfVacancy.shape[0]):
