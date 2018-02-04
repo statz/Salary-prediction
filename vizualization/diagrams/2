@@ -1,0 +1,12 @@
+digraph G {
+    rankdir=LR;
+	splines=line;
+    bias[label = 1, shape=circle]
+    x1, x2[shape = circle];
+    a1 [shape = circle, label = <f(w<sub>1</sub>x<sub>1</sub>+w<sub>2</sub>x<sub>2</sub>+b)>, fontsize = 6]
+    Y[shape = plaintext]
+    bias -> a1 [label=<b>];
+    x1 -> a1 [label=<w<sub>1</sub>>];
+    x2 -> a1 [label=<w<sub>2</sub>>];
+    a1 -> Y;
+}

@@ -8,7 +8,7 @@ test_train_path = os.path.split(os.getcwd())[0] + "\\test_train\\"
 
 version = ["", "_normalized"]
 for i in version:
-    cnx = sqlite3.connect(data_path + "\\vacancies3" + i + ".db")
+    cnx = sqlite3.connect(data_path + "\\vacancies4" + i + ".db")
     data = pd.read_sql_query("SELECT * FROM hh", cnx)
     cnx.close()
     data = data[data["TextOfVacancy"] != '']

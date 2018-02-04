@@ -49,6 +49,7 @@ for i in range(number_vacancies):
     vacancy = data["TextOfVacancy"].iloc[i]
     vacancy.replace("C++", "cpp")
     vacancy.replace("C#", "csh")
+
     wr = re.search("[А-Я]*[а-я]+[А-Я]{1,1}[а-я]{1,}", vacancy)
     if wr != None:
         words = vacancy.split(" ")
@@ -61,6 +62,10 @@ for i in range(number_vacancies):
             else:
                 ns.append(w)
         vacancy = " ".join(ns)
+
+    if re.search(r"[А-Яа-я-]*:", vacancy):
+        vacancy = re.split(r"[А-Яа-я-]*:", vacancy, maxsplit=1)[1]
+
     vacancy = vacancy.lower()
     vacancy = vacancy.replace("nan", "нан")
     vacancy = re.sub(r"[^а-я^a-z^ё^ ]", " ", vacancy)

@@ -32,3 +32,15 @@ prediction/neural/one_layer/ffsd.py
 prediction/neural/one_layer/cvv.py
 prediction/neural/one_layer/fsdafsaf.py
 preprocessing/ыфвафыаф.py
+prediction/neural/deep_conv+lstm/data/down_model
+prediction/neural/deep_conv+lstm/data/up_model
+prediction/neural/conv/data/down_model
+prediction/neural/conv/data/up_model
+*.dll
+*.pyd
+*.exe
+*.bat
+*.cfg
+*.tcl
+venv/Scripts/activate
+venv/Scripts/Activate.ps1

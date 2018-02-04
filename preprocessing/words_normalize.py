@@ -3,7 +3,6 @@ import pandas as pd
 import os
 import re
 from subprocess import Popen, PIPE
-import pymorphy2
 
 data_path = os.path.split(os.getcwd())[0] + "\\data"
 cnx = sqlite3.connect(data_path + "\\vacancies3.db")

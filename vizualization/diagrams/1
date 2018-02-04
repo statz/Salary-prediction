@@ -1,0 +1,48 @@
+digraph G {
+        rankdir=LR
+	    splines=line
+
+        node [fixedsize=true, label=""];
+
+        subgraph cluster_0
+        {
+            color=white;
+            node [style=solid,color=blue4, shape=circle];
+            bias1[label=1] x1[label=<x<sub>1</sub>>] x2[label=<x<sub>2</sub>>] x3[label=<x<sub>3</sub>>];
+            label = "layer 1 (Input layer)";
+	    }
+
+	    subgraph cluster_1
+	    {
+            color=white;
+            node [style=solid,color=red2, shape=circle];
+            bias2[label=1] a12[label=<a<sub>0</sub><sup>(2)</sup>>] a22[label=<a<sub>1</sub><sup>(2)</sup>>]
+            a32[label=<a<sub>3</sub><sup>(2)</sup>>];
+            label = "layer 2 (hidden layer)";
+	    }
+
+	    subgraph cluster_2 {
+            color=white;
+            node [style=solid,color=seagreen2, shape=circle];
+            O[label=<a<sub>0</sub><sup>(3)</sup>>];
+            label="layer 3 (output layer)";
+	    }
+
+        bias1 -> a12;
+        bias1 -> a22;
+        bias1 -> a32;
+        x1 -> a12;
+        x1 -> a22;
+        x1 -> a32;
+        x2 -> a12;
+        x2 -> a22;
+        x2 -> a32;
+        x3 -> a12;
+        x3 -> a22;
+        x3 -> a32;
+
+        bias2 -> O
+        a12 -> O
+        a22 -> O
+        a32 -> O
+}
